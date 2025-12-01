@@ -41,6 +41,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 	private fun Project.configureProject(extension: ModPlatformExtensionImpl) {
 		val loader = extension.loader.get()
 		val isFabric = loader == "fabric"
+		val isForge = loader == "forge"
 		val isNeoForge = loader == "neoforge"
 
 		val modId = prop("mod.id")
@@ -56,7 +57,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 
 		configureJarTask(modId)
 		configureIdea()
-		configureProcessResources(isFabric, isNeoForge, modId, "$modVersion$channelTag", mcVersion, extension)
+		configureProcessResources(isFabric, isForge, isNeoForge, modId, "$modVersion$channelTag", mcVersion, extension)
 		configureJava(stonecutter)
 		registerBuildAndCollectTask(extension, "$modVersion$channelTag")
 		configurePublishing(extension, loader, stonecutter, "$modVersion$channelTag", channelTag, version.toString())
@@ -70,6 +71,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 
 	private fun Project.configureProcessResources(
 		isFabric: Boolean,
+		isForge: Boolean,
 		isNeoForge: Boolean,
 		modId: String,
 		modVersion: String,
@@ -110,12 +112,17 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 			when {
 				isFabric -> {
 					filesMatching("fabric.mod.json") { expand(props) }
-					exclude("META-INF/neoforge.mods.toml", "META-INF/accesstransformer.cfg", ".cache")
+					exclude("META-INF/neoforge.mods.toml", "META-INF/mods.toml", "META-INF/accesstransformer.cfg", ".cache")
+				}
+
+				isForge -> {
+					filesMatching("META-INF/mods.toml") { expand(props) }
+					exclude("fabric.mod.json", "META-INF/neoforge.mods.toml", "${modId}.accesswidener", ".cache")
 				}
 
 				isNeoForge -> {
 					filesMatching("META-INF/neoforge.mods.toml") { expand(props) }
-					exclude("fabric.mod.json", "${modId}.accesswidener", ".cache")
+					exclude("fabric.mod.json", "META-INF/mods.toml", "${modId}.accesswidener", ".cache")
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-package com.example.modtemplate.platform;
+package soup587.exturaddon.platform;
 
 public interface Platform {
 	boolean isModLoaded(String modId);

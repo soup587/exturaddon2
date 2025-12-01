@@ -1,16 +1,15 @@
-package com.example.modtemplate.platform.fabric;
+package soup587.exturaddon.platform.fabric;
 
 //? fabric {
 
-import com.example.modtemplate.ModTemplate;
+import soup587.exturaddon.Exturaddon;
 import net.fabricmc.api.ModInitializer;
 
 public class FabricEntrypoint implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ModTemplate.onInitialize();
-		FabricEventSubscriber.registerEvents();
+		Exturaddon.onInitialize();
 	}
 }
 //?}

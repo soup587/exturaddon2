@@ -1,8 +1,8 @@
-package com.example.modtemplate.platform.neoforge;
+package soup587.exturaddon.platform.neoforge;
 
 //? neoforge {
-/*
-import com.example.modtemplate.platform.Platform;
+
+/*import soup587.exturaddon.platform.Platform;
 import net.neoforged.fml.ModList;
 
 public class NeoforgePlatform implements Platform {
