@@ -1,5 +1,7 @@
 package soup587.exturaddon.mixin.lua;
 
+import com.mojang.brigadier.StringReader;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.commands.CommandBuildContext;
@@ -27,27 +29,34 @@ import org.figuramc.figura.lua.docs.LuaMethodDoc;
 import org.figuramc.figura.lua.docs.LuaMethodOverload;
 import org.figuramc.figura.math.vector.FiguraVec2;
 import org.figuramc.figura.math.vector.FiguraVec3;
+import org.figuramc.figura.mixin.input.KeyMappingAccessor;
 import org.figuramc.figura.utils.LuaUtils;
 import org.luaj.vm2.LuaError;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import soup587.exturaddon.ExturaPermissions;
+import soup587.exturaddon.lua.KeyMappingAPI;
 import soup587.exturaddon.overrides.ExturaInput;
 import soup587.exturaddon.overrides.NoInput;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 @Mixin(HostAPI.class)
-public class HostAPIMixin {
+public abstract class HostAPIMixin {
 
 	@Shadow @Final private Avatar owner;
 	@Shadow @Final private boolean isHost;
 	@Shadow @Final private Minecraft minecraft;
+
+	@Shadow
+	public abstract boolean isHost();
 
 	@LuaWhitelist
 	@LuaMethodDoc("host.allow_extura_cheats")
@@ -56,7 +65,10 @@ public class HostAPIMixin {
 		LocalPlayer player = this.minecraft.player;
 		return player != null && ((player.hasPermissions(2)  ||
 				this.minecraft.isLocalServer() ||
+				//? if < 1.20.2 {
 				(player.getScoreboard().hasObjective("extura_can_cheat"))
+				//?} else
+				//false
 		));
 	}
 	public Boolean canExturaCheat() {
@@ -65,7 +77,10 @@ public class HostAPIMixin {
 		if(player == null) return false;
 		if(player.hasPermissions(2)  ||
 				this.minecraft.isLocalServer() ||
+				//? if < 1.20.2 {
 				(player.getScoreboard().hasObjective("extura_can_cheat"))
+				//?} else
+				//false
 		) return true;
 		if(!owner.noPermissions.contains(ExturaPermissions.EXTURA_CHEATING)){
 			owner.noPermissions.add(ExturaPermissions.EXTURA_CHEATING);
@@ -126,7 +141,7 @@ public class HostAPIMixin {
 		AvatarList.selectedEntry = null;
 		return true;
 	}
-	@LuaWhitelist
+	/*@LuaWhitelist
 	@LuaMethodDoc("host.upload_avatar_to")
 	public boolean uploadAvatarTo(boolean backend,boolean fsb) {
 		if(!this.isHost) return false;
@@ -139,6 +154,7 @@ public class HostAPIMixin {
 		AvatarList.selectedEntry = null;
 		return true;
 	}
+	 */
 	@LuaWhitelist
 	@LuaMethodDoc(
 			overloads = {
@@ -477,7 +493,7 @@ public class HostAPIMixin {
 	@LuaWhitelist
 	@LuaMethodDoc("host.get_key_mappings")
 	public Map<String, KeyMappingAPI<?>> getKeyMappings() {
-		if (!isHost()) return new HashMap<>();
+		if (!this.isHost()) return new HashMap<>();
 		HashMap<String, KeyMappingAPI<?>> mappingslist = new HashMap<>();
 
 		Map<String, KeyMapping> mappings = KeyMappingAccessor.getAll();

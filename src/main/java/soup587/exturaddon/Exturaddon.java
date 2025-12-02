@@ -1,17 +1,19 @@
 package soup587.exturaddon;
 
+import org.figuramc.figura.lua.FiguraAPIManager;
+import soup587.exturaddon.lua.KeyMappingAPI;
 import soup587.exturaddon.platform.Platform;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 //? fabric {
-	/*import soup587.exturaddon.platform.fabric.FabricPlatform;
-*///?} forge {
+	import soup587.exturaddon.platform.fabric.FabricPlatform;
+//?} forge {
 	/*import soup587.exturaddon.platform.forge.ForgePlatform;
 *///?} neoforge {
-	import soup587.exturaddon.platform.neoforge.NeoforgePlatform;
-//?}
+	/*import soup587.exturaddon.platform.neoforge.NeoforgePlatform;
+*///?}
 
 
 @SuppressWarnings("LoggingSimilarMessage")
@@ -25,12 +27,7 @@ public class Exturaddon {
 	private static final Platform PLATFORM = createPlatformInstance();
 
 	public static void onInitialize() {
-		LOGGER.info("Initializing {} on {}", MOD_ID, Exturaddon.xplat().loader());
-	}
-
-	public static void onInitializeClient() {
-		LOGGER.info("Initializing {} Client on {}", MOD_ID, Exturaddon.xplat().loader());
-		LOGGER.debug("{}: { version: {}; friendly_name: {} }", MOD_ID, MOD_VERSION, MOD_FRIENDLY_NAME);
+		FiguraAPIManager.WHITELISTED_CLASSES.add(KeyMappingAPI.class);
 	}
 
 	static Platform xplat() {
@@ -39,10 +36,10 @@ public class Exturaddon {
 
 	private static Platform createPlatformInstance() {
 		//? fabric {
-		/*return new FabricPlatform();
-		*///?} neoforge {
-		return new NeoforgePlatform();
-		 //?} forge {
+		return new FabricPlatform();
+		//?} neoforge {
+		/*return new NeoforgePlatform();
+		 *///?} forge {
 		/*return new ForgePlatform();
 		*///?}
 	}
