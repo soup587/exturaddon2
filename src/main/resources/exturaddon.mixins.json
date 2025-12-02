@@ -6,8 +6,8 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "mixins": [
-    "ExampleMixin"
-  ],
-  "client": []
+  "mixins": [],
+  "client": [
+    "lua.HostAPIMixin"
+  ]
 }

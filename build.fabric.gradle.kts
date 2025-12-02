@@ -3,6 +3,12 @@ plugins {
 	id("fabric-loom")
 }
 
+repositories {
+	maven("https://maven.figuramc.org/releases") { name = "Figura Releases" }
+	maven("https://maven.figuramc.org/snapshots") { name = "Figura Snapshots" }
+	maven("https://jitpack.io")
+}
+
 platform {
 	loader = "fabric"
 	dependencies {
@@ -16,7 +22,7 @@ platform {
 		required("fabricloader") {
 			versionRange = ">=${libs.fabric.loader.get().version}"
 		}
-		optional("modmenu") {}
+		required("figura") {}
 	}
 }
 
@@ -55,4 +61,9 @@ dependencies {
 		})
 	modImplementation(libs.fabric.loader)
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("deps.fabric-api")}")
+
+	implementation("com.github.FiguraMC.luaJ:luaj-core:${prop("deps.luaj")}-figura")
+	implementation("com.github.FiguraMC.luaJ:luaj-jse:${prop("deps.luaj")}-figura")
+	implementation("com.neovisionaries:nv-websocket-client:${prop("deps.nv_websocket")}")
+	modImplementation("org.figuramc:figura-fabric:${prop("deps.figura")}+${prop("deps.minecraft")}")
 }

@@ -6,12 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 //? fabric {
-	import soup587.exturaddon.platform.fabric.FabricPlatform;
-//?} forge {
+	/*import soup587.exturaddon.platform.fabric.FabricPlatform;
+*///?} forge {
 	/*import soup587.exturaddon.platform.forge.ForgePlatform;
 *///?} neoforge {
-	/*import soup587.exturaddon.platform.neoforge.NeoforgePlatform;
-*///?}
+	import soup587.exturaddon.platform.neoforge.NeoforgePlatform;
+//?}
 
 
 @SuppressWarnings("LoggingSimilarMessage")
@@ -39,10 +39,10 @@ public class Exturaddon {
 
 	private static Platform createPlatformInstance() {
 		//? fabric {
-		return new FabricPlatform();
-		//?} neoforge {
-		/*return new NeoforgePlatform();
-		 *///?} forge {
+		/*return new FabricPlatform();
+		*///?} neoforge {
+		return new NeoforgePlatform();
+		 //?} forge {
 		/*return new ForgePlatform();
 		*///?}
 	}

@@ -2,7 +2,7 @@ package soup587.exturaddon.platform.neoforge;
 
 //? neoforge {
 
-/*import soup587.exturaddon.platform.Platform;
+import soup587.exturaddon.platform.Platform;
 import net.neoforged.fml.ModList;
 
 public class NeoforgePlatform implements Platform {
@@ -17,4 +17,4 @@ public class NeoforgePlatform implements Platform {
 		return ModLoader.NEOFORGE;
 	}
 }
-*///?}
+//?}

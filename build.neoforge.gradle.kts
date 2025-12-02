@@ -3,6 +3,12 @@ plugins {
 	id("net.neoforged.moddev")
 }
 
+repositories {
+	maven("https://maven.figuramc.org/releases") { name = "Figura Releases" }
+	maven("https://maven.figuramc.org/snapshots") { name = "Figura Snapshots" }
+	maven("https://jitpack.io")
+}
+
 platform {
 	loader = "neoforge"
 	dependencies {
@@ -48,6 +54,10 @@ neoForge {
 }
 
 dependencies {
+	compileOnly("com.github.FiguraMC.luaJ:luaj-core:${prop("deps.luaj")}-figura")
+	compileOnly("com.github.FiguraMC.luaJ:luaj-jse:${prop("deps.luaj")}-figura")
+	compileOnly("com.neovisionaries:nv-websocket-client:${prop("deps.nv_websocket")}")
+	implementation("org.figuramc:figura-neoforge:${prop("deps.figura")}+${prop("deps.minecraft")}")
 
 }
 
