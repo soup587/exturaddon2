@@ -151,7 +151,7 @@ public class RendererAPIMixin implements RendererAPIAccessor {
 
 	@Inject(method="__index", at = @At("HEAD"), cancellable = true)
 	public void addNewVars(String arg, CallbackInfoReturnable<Object> cir) {
-		var returnr = (switch(arg) {
+		Object returnr = (switch(arg) {
 			case "renderPlayerHealth" -> renderPlayerHealth;
 			case "renderSelectedItemName" -> renderSelectedItemName;
 			case "renderHotbar" -> renderHotbar;
@@ -162,14 +162,11 @@ public class RendererAPIMixin implements RendererAPIAccessor {
 			case "renderFirstPerson" -> renderFirstPerson;
 			default -> null;
 		});
-		if (returnr != null) {
-			cir.setReturnValue(returnr);
-		}
+		if (returnr != null) cir.setReturnValue(returnr);
 	}
 
 	@Inject(method="__newindex", at = @At("HEAD"), cancellable = true)
 	public void addNewSetVars(String key, boolean value, CallbackInfo ci) {
-		boolean exists = true;
 		switch(key) {
 			case "renderPlayerHealth" -> renderPlayerHealth = value;
 			case "renderSelectedItemName" -> renderSelectedItemName = value;
@@ -179,9 +176,9 @@ public class RendererAPIMixin implements RendererAPIAccessor {
 			case "renderEffects" -> renderEffects = value;
 			case "renderGUI" -> renderGUI = value;
 			case "renderFirstPerson" -> renderFirstPerson = value;
-			default -> exists = false;
+			default -> {return;}
 		}
-		if (exists) ci.cancel();
+		ci.cancel();
 	}
 
 }
