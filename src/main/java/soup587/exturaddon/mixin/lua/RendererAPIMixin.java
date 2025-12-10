@@ -108,7 +108,7 @@ public class RendererAPIMixin implements RendererAPIAccessor {
 		//? if < 1.20.2 {
 		return Minecraft.getInstance().getDeltaFrameTime();
 		//?} else
-		//return Minecraft.getInstance().getTimer().getGameTimeDeltaTicks();
+		//return Minecraft.getInstance().getTimer().getRealtimeDeltaTicks();
 	}
 
 	@LuaWhitelist

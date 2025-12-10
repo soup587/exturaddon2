@@ -3,12 +3,6 @@ plugins {
 	id("net.neoforged.moddev.legacyforge")
 }
 
-repositories {
-	maven("https://maven.figuramc.org/releases") { name = "Figura Releases" }
-	maven("https://maven.figuramc.org/snapshots") { name = "Figura Snapshots" }
-	maven("https://jitpack.io")
-}
-
 platform {
 	loader = "forge"
 	dependencies {
@@ -22,14 +16,13 @@ platform {
 }
 
 legacyForge {
-	version = property("deps.forge") as String
+	version = "${property("deps.minecraft")}-${property("deps.forge")}"
+
 	validateAccessTransformers = true
 
-	if (hasProperty("deps.parchment")) parchment {
-		val (mc, ver) = (property("deps.parchment") as String).split(':')
-		mappingsVersion = ver
-		minecraftVersion = mc
-	}
+	accessTransformers.from(
+		rootProject.file("src/main/resources/aw/${stonecutter.current.version}.cfg")
+	)
 
 	runs {
 		register("client") {
@@ -45,21 +38,57 @@ legacyForge {
 		}
 	}
 
+
 	mods {
-		register(property("mod.id") as String) {
+		register(prop("mod.id")) {
 			sourceSet(sourceSets["main"])
 		}
 	}
-	sourceSets["main"].resources.srcDir("${rootDir}/versions/datagen/${stonecutter.current.version.split("-")[0]}/src/main/generated")
+}
+
+mixin {
+	add(sourceSets.main.get(), "${prop("mod.id")}.mixins.refmap.json")
+	config("${prop("mod.id")}.mixins.json")
+}
+
+repositories {
+	mavenCentral()
+	strictMaven("https://api.modrinth.com/maven", "maven.modrinth") { name = "Modrinth" }
+	maven("https://maven.figuramc.org/releases") { name = "Figura Releases" }
+	maven("https://maven.figuramc.org/snapshots") { name = "Figura Snapshots" }
+	maven("https://jitpack.io")
 }
 
 dependencies {
+	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
+
+	implementation(libs.moulberry.mixinconstraints)
+	jarJar(libs.moulberry.mixinconstraints)
+
+	"io.github.llamalad7:mixinextras-common:0.5.2".let {
+		compileOnly(it)
+		annotationProcessor(it)
+	}
+
 	compileOnly("com.github.FiguraMC.luaJ:luaj-core:${prop("deps.luaj")}-figura")
 	compileOnly("com.github.FiguraMC.luaJ:luaj-jse:${prop("deps.luaj")}-figura")
 	compileOnly("com.neovisionaries:nv-websocket-client:${prop("deps.nv_websocket")}")
 	modImplementation("org.figuramc:figura-forge:${prop("deps.figura")}+${prop("deps.minecraft")}")
 }
 
+sourceSets {
+	main {
+		resources.srcDir(
+			"${rootDir}/versions/datagen/${stonecutter.current.version.split("-")[0]}/src/main/generated"
+		)
+	}
+}
+
 tasks.named("createMinecraftArtifacts") {
 	dependsOn(tasks.named("stonecutterGenerate"))
 }
+
+stonecutter {
+
+}
+

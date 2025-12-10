@@ -23,6 +23,7 @@ platform {
 
 neoForge {
 	version = property("deps.neoforge") as String
+	accessTransformers.from(rootProject.file("src/main/resources/aw/${stonecutter.current.version}.cfg"))
 	validateAccessTransformers = true
 
 	if (hasProperty("deps.parchment")) parchment {
@@ -54,11 +55,13 @@ neoForge {
 }
 
 dependencies {
+	implementation(libs.moulberry.mixinconstraints)
+	jarJar(libs.moulberry.mixinconstraints)
+
 	compileOnly("com.github.FiguraMC.luaJ:luaj-core:${prop("deps.luaj")}-figura")
 	compileOnly("com.github.FiguraMC.luaJ:luaj-jse:${prop("deps.luaj")}-figura")
 	compileOnly("com.neovisionaries:nv-websocket-client:${prop("deps.nv_websocket")}")
 	implementation("org.figuramc:figura-neoforge:${prop("deps.figura")}+${prop("deps.minecraft")}")
-
 }
 
 tasks.named("createMinecraftArtifacts") {

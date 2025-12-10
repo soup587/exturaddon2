@@ -21,12 +21,10 @@ public class EventsAPIMixin implements EventsAPIAccessor {
 
 	@LuaWhitelist
 	@LuaFieldDoc("events.pre_render")
-	public LuaEvent PRE_RENDER;
+	public LuaEvent PRE_RENDER = new LuaEvent();
 
-	@Inject(method = "<init>", at = @At("RETURN"))
+	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"))
 	void addEvents(CallbackInfo ci) {
-		PRE_RENDER = new LuaEvent();
-
 		events.put("PRE_RENDER", PRE_RENDER);
 	}
 
