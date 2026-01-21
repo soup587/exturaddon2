@@ -68,7 +68,7 @@ public abstract class HostAPIMixin {
 				//? if < 1.20.2 {
 				(player.getScoreboard().hasObjective("extura_can_cheat"))
 				//?} else
-				//false
+				//(player.getScoreboard().getObjective("extura_can_cheat") != null)
 		));
 	}
 	public Boolean canExturaCheat() {
@@ -80,7 +80,7 @@ public abstract class HostAPIMixin {
 				//? if < 1.20.2 {
 				(player.getScoreboard().hasObjective("extura_can_cheat"))
 				//?} else
-				//false
+				//(player.getScoreboard().getObjective("extura_can_cheat") != null)
 		) return true;
 		if(!owner.noPermissions.contains(ExturaPermissions.EXTURA_CHEATING)){
 			owner.noPermissions.add(ExturaPermissions.EXTURA_CHEATING);
@@ -106,7 +106,6 @@ public abstract class HostAPIMixin {
 			Class c = this.minecraft.player.getClass();
 			if(args == null || args.length == 0){
 				med = c.getMethod(name);
-
 			}else{
 
 				Class<?>[] argumentTypes = new Class[args.length];
