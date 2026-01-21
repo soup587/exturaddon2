@@ -1,3 +1,5 @@
+import org.codehaus.groovy.control.messages.WarningMessage
+
 plugins {
 	id("mod-platform")
 	id("fabric-loom")
@@ -67,5 +69,11 @@ dependencies {
 	implementation("com.github.FiguraMC.luaJ:luaj-core:${prop("deps.luaj")}-figura")
 	implementation("com.github.FiguraMC.luaJ:luaj-jse:${prop("deps.luaj")}-figura")
 	implementation("com.neovisionaries:nv-websocket-client:${prop("deps.nv_websocket")}")
-	modImplementation("org.figuramc:figura-fabric:${prop("deps.figura")}+${prop("deps.minecraft")}")
+	if(!prop("deps.figura_version").isEmpty()){
+		// This is to allow compiling against versions of Figura that haven't released yet, I think
+		modImplementation("org.figuramc:figura-fabric:${prop("deps.figura_version")}")
+	}else{
+		modImplementation("org.figuramc:figura-fabric:${prop("deps.figura")}+${prop("deps.minecraft")}")
+
+	}
 }

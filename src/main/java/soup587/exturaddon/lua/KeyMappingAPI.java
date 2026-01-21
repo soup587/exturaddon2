@@ -39,7 +39,11 @@ public class KeyMappingAPI<T extends KeyMapping> {
 	@LuaWhitelist
 	@LuaMethodDoc("keymapping.get_category")
 	public String getCategory() {
+//?	if > 1.21.9 {
+// return "NOT IMPLEMENTED YET!";
+//?} else {
 		return mapping.getCategory();
+//?}
 	}
 
 	@LuaWhitelist

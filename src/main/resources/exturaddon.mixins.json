@@ -8,6 +8,7 @@
   },
   "mixins": [],
   "client": [
+    "lua.LuaTypeManagerMixin",
     "lua.HostAPIMixin",
     "lua.RendererAPIMixin",
     "render.LevelRendererMixin",

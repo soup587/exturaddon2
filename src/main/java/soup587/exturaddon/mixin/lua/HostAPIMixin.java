@@ -37,6 +37,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import soup587.exturaddon.ExturaPermissions;
 import soup587.exturaddon.lua.KeyMappingAPI;
+import soup587.exturaddon.lua.NotImplementedLuaError;
 import soup587.exturaddon.overrides.ExturaInput;
 import soup587.exturaddon.overrides.NoInput;
 
@@ -249,8 +250,7 @@ public abstract class HostAPIMixin {
 			value = "host.set_pos"
 	)
 	public void setPos(Object x, Double y, Double z) {
-		if (!canExturaCheat()) return;
-		if(x == null) return;
+		if (!canExturaCheat() || x == null) return;
 		LocalPlayer player = this.minecraft.player;
 		player.setPos(LuaUtils.parseVec3("player_setPos", x, y, z).asVec3());
 	}
@@ -259,10 +259,17 @@ public abstract class HostAPIMixin {
 	public void startRiding(EntityAPI entity,boolean bool) {
 		if (!canExturaCheat()) return;
 		LocalPlayer player = this.minecraft.player;
-		if(entity == null) player.removeVehicle();
-		Entity t = entity.getEntity();
-		if(t == player) throw new LuaError("You cannot ride yourself!");
-		player.startRiding(t,bool);
+		if(entity == null) {
+			player.removeVehicle();
+			return;
+		}
+//?		if > 1.21.11 {
+//			throw new NotImplementedLuaError();
+//?} else {
+			Entity t = entity.getEntity();
+			if(t == player) throw new LuaError("You cannot ride yourself!");
+			player.startRiding(t,bool);
+//?		}
 	}
 
 	@LuaWhitelist
@@ -311,10 +318,13 @@ public abstract class HostAPIMixin {
 			value = "host.set_player_movement"
 	)
 	public void setPlayerMovement(Boolean playerMovement) {
+//?		if < 1.21.2 {
 		LocalPlayer player;
 		if (!this.isHost || (player = this.minecraft.player) == null || !canExturaCheat()) return;
 		player.input = (playerMovement ? new ExturaInput(this.minecraft.options) : new NoInput());
-
+//?}else {
+//		throw new NotImplementedLuaError();
+//?}
 	}
 	@LuaWhitelist
 	@LuaMethodDoc(
@@ -334,6 +344,7 @@ public abstract class HostAPIMixin {
 		if(!canExturaCheat()) return;
 		LocalPlayer player;
 		if (!this.isHost || (player = this.minecraft.player) == null) return;
+//?		if < 1.21.2 {
 		if(!(player.input instanceof ExturaInput)){
 			player.input = new ExturaInput(this.minecraft.options);
 		}
@@ -348,13 +359,20 @@ public abstract class HostAPIMixin {
 			case "shift": inputObj.shiftOverride = state; break;
 			default: throw new LuaError("Invalid input");
 		}
+//?}else {
+//		throw new NotImplementedLuaError();
+//?}
 	}
 	@LuaWhitelist
 	@LuaMethodDoc("host.get_player_movement")
 	public Boolean getPlayerMovement() {
 		LocalPlayer player;
 		if (!this.isHost || (player = this.minecraft.player) == null) return true;
+//?		if < 1.21.2 {
 		return (player.input instanceof NoInput);
+//?}else {
+//		throw new NotImplementedLuaError();
+//?}
 	}
 
 	@LuaWhitelist

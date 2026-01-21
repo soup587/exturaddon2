@@ -1,6 +1,7 @@
 package soup587.exturaddon.overrides;
 
 import net.minecraft.client.Options;
+//? if < 1.21.2 {
 import net.minecraft.client.player.Input;
 
 public class ExturaInput extends Input {
@@ -34,3 +35,9 @@ public class ExturaInput extends Input {
 		}
 	}
 }
+//? } else {
+//public class ExturaInput {
+//	public ExturaInput(Options options) {}
+//
+//}
+//?}

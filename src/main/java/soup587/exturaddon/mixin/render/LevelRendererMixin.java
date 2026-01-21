@@ -15,10 +15,14 @@ import soup587.exturaddon.ducks.RendererAPIAccessor;
 public class LevelRendererMixin {
 
 	@Shadow @Final private Minecraft minecraft;
-
+// collectVisibleEntities(Camera p_365712_, Frustum p_365717_, List<Entity> p_368622_
+//? if >1.21.1{
+// 	@ModifyExpressionValue(method = "collectVisibleEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isSleeping()Z"))
+// ?} else {
 	@ModifyExpressionValue(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isSleeping()Z"))
+//?}
 	private boolean forceModelRender(boolean original) {
-		if (original) return original;
+		if (original) return true;
 		Avatar avatar = AvatarManager.getAvatar(this.minecraft.getCameraEntity());
 		return avatar != null && avatar.luaRuntime != null && ((RendererAPIAccessor) avatar.luaRuntime.renderer).shouldRenderFirstPerson();
 	}
