@@ -67,9 +67,9 @@ public abstract class HostAPIMixin {
 		return player != null && ((player.hasPermissions(2)  ||
 				this.minecraft.isLocalServer() ||
 				//? if < 1.20.2 {
-				(player.getScoreboard().hasObjective("extura_can_cheat"))
-				//?} else
-				//(player.getScoreboard().getObjective("extura_can_cheat") != null)
+				/*(player.getScoreboard().hasObjective("extura_can_cheat"))
+				*///?} else
+				(player.getScoreboard().getObjective("extura_can_cheat") != null)
 		));
 	}
 	public Boolean canExturaCheat() {
@@ -79,9 +79,9 @@ public abstract class HostAPIMixin {
 		if(player.hasPermissions(2)  ||
 				this.minecraft.isLocalServer() ||
 				//? if < 1.20.2 {
-				(player.getScoreboard().hasObjective("extura_can_cheat"))
-				//?} else
-				//(player.getScoreboard().getObjective("extura_can_cheat") != null)
+				/*(player.getScoreboard().hasObjective("extura_can_cheat"))
+				*///?} else
+				(player.getScoreboard().getObjective("extura_can_cheat") != null)
 		) return true;
 		if(!owner.noPermissions.contains(ExturaPermissions.EXTURA_CHEATING)){
 			owner.noPermissions.add(ExturaPermissions.EXTURA_CHEATING);
@@ -323,8 +323,8 @@ public abstract class HostAPIMixin {
 		if (!this.isHost || (player = this.minecraft.player) == null || !canExturaCheat()) return;
 		player.input = (playerMovement ? new ExturaInput(this.minecraft.options) : new NoInput());
 //?}else {
-//		throw new NotImplementedLuaError();
-//?}
+		/*throw new NotImplementedLuaError();
+*///?}
 	}
 	@LuaWhitelist
 	@LuaMethodDoc(
@@ -360,8 +360,8 @@ public abstract class HostAPIMixin {
 			default: throw new LuaError("Invalid input");
 		}
 //?}else {
-//		throw new NotImplementedLuaError();
-//?}
+		/*throw new NotImplementedLuaError();
+*///?}
 	}
 	@LuaWhitelist
 	@LuaMethodDoc("host.get_player_movement")
@@ -371,8 +371,8 @@ public abstract class HostAPIMixin {
 //?		if < 1.21.2 {
 		return (player.input instanceof NoInput);
 //?}else {
-//		throw new NotImplementedLuaError();
-//?}
+		/*throw new NotImplementedLuaError();
+*///?}
 	}
 
 	@LuaWhitelist

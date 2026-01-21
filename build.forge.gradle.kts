@@ -76,13 +76,13 @@ dependencies {
 	modImplementation("org.figuramc:figura-forge:${prop("deps.figura")}+${prop("deps.minecraft")}")
 }
 
-sourceSets {
-	main {
-		resources.srcDir(
-			"${rootDir}/versions/datagen/${stonecutter.current.version.split("-")[0]}/src/main/generated"
-		)
-	}
-}
+//sourceSets {
+//	main {
+//		resources.srcDir(
+//			"${rootDir}/versions/datagen/${stonecutter.current.version.split("-")[0]}/src/main/generated"
+//		)
+//	}
+//}
 
 tasks.named("createMinecraftArtifacts") {
 	dependsOn(tasks.named("stonecutterGenerate"))

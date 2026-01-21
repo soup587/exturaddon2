@@ -106,9 +106,9 @@ public class RendererAPIMixin implements RendererAPIAccessor {
 	@LuaMethodDoc("renderer.get_delta_time")
 	public Float getDeltaTime() {
 		//? if < 1.20.2 {
-		return Minecraft.getInstance().getDeltaFrameTime();
-		//?} else if < 1.21.7{
-		//return Minecraft.getInstance().getTimer().getRealtimeDeltaTicks();
+		/*return Minecraft.getInstance().getDeltaFrameTime();
+		*///?} else if < 1.21.7{
+		return Minecraft.getInstance().getTimer().getRealtimeDeltaTicks();
 		//?} else
 		//return Minecraft.getInstance().getDeltaTracker().getRealtimeDeltaTicks();
 	}

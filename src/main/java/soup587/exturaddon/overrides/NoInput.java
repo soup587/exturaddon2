@@ -12,5 +12,5 @@ public class NoInput extends Input {
 	}
 }
 //? } else {
-// public class NoInput {}
-//?}
+ /*public class NoInput {}
+*///?}

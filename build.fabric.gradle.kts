@@ -17,10 +17,6 @@ platform {
 		required("minecraft") {
 			versionRange = prop("deps.minecraft")
 		}
-		required("fabric-api") {
-			slug("fabric-api")
-			versionRange = ">=${prop("deps.fabric-api")}"
-		}
 		required("fabricloader") {
 			versionRange = ">=${libs.fabric.loader.get().version}"
 		}
@@ -47,13 +43,6 @@ loom {
 	}
 }
 
-fabricApi {
-	configureDataGeneration() {
-		outputDirectory = file("${rootDir}/versions/datagen/${stonecutter.current.version.split("-")[0]}/src/main/generated")
-		client = true
-	}
-}
-
 dependencies {
 	minecraft("com.mojang:minecraft:${prop("deps.minecraft")}")
 	mappings(
@@ -64,7 +53,6 @@ dependencies {
 	modImplementation(libs.fabric.loader)
 	implementation(libs.moulberry.mixinconstraints)
 	include(libs.moulberry.mixinconstraints)
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("deps.fabric-api")}")
 
 	implementation("com.github.FiguraMC.luaJ:luaj-core:${prop("deps.luaj")}-figura")
 	implementation("com.github.FiguraMC.luaJ:luaj-jse:${prop("deps.luaj")}-figura")

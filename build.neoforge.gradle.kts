@@ -51,7 +51,7 @@ neoForge {
 			sourceSet(sourceSets["main"])
 		}
 	}
-	sourceSets["main"].resources.srcDir("${rootDir}/versions/datagen/${stonecutter.current.version.split("-")[0]}/src/main/generated")
+	//sourceSets["main"].resources.srcDir("${rootDir}/versions/datagen/${stonecutter.current.version.split("-")[0]}/src/main/generated")
 }
 
 dependencies {

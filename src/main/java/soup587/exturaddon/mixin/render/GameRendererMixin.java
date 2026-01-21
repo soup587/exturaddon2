@@ -1,7 +1,7 @@
 package soup587.exturaddon.mixin.render;
 
 //? if > 1.20.1
-//import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import org.figuramc.figura.avatar.Avatar;
@@ -22,9 +22,9 @@ public class GameRendererMixin {
 
 	@Inject(method = "render", at = @At("HEAD"))
 	//? if < 1.20.2 {
-	private void preRender(float tickDelta, long startTime, boolean tick, CallbackInfo ci) {
-	//?} else
-	//private void preRender(DeltaTracker tickDelta, boolean p_109096_, CallbackInfo ci) {
+	/*private void preRender(float tickDelta, long startTime, boolean tick, CallbackInfo ci) {
+	*///?} else
+	private void preRender(DeltaTracker tickDelta, boolean p_109096_, CallbackInfo ci) {
 		Avatar avatar = AvatarManager.getAvatar(this.minecraft.getCameraEntity());
 		if (avatar == null)
 			return;
@@ -32,9 +32,9 @@ public class GameRendererMixin {
 
 		AvatarManager.executeAll("preRender", renderedAvatar -> ((AvatarAccessor)renderedAvatar).extura$preRenderEvent(
 			//? if < 1.20.2 {
-				tickDelta
-			//?} else
-				//tickDelta.getRealtimeDeltaTicks()
+				/*tickDelta
+			*///?} else
+				tickDelta.getRealtimeDeltaTicks()
 		));
 	}
 
