@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LuaTypeManager.class)
 public class LuaTypeManagerMixin {
 
-	@Inject(at=@At("HEAD"), method="getWrapper")
+	@Inject(at=@At("HEAD"), method="getWrapper", cancellable = true)
 	public void getWrapper(@NotNull Method method, CallbackInfoReturnable<VarArgFunction> cir){
         if(method.getParameterTypes().length == 0) {
             if(Modifier.isStatic(method.getModifiers())){

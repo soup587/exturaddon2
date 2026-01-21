@@ -2,6 +2,7 @@ package soup587.exturaddon.mixin.render;
 
 //? if > 1.20.1
 //import net.minecraft.client.DeltaTracker;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -15,6 +16,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import soup587.exturaddon.ducks.RendererAPIAccessor;
 
 @Mixin(Gui.class)
@@ -26,8 +28,8 @@ public class GuiMixin {
 	@Inject(at = @At("HEAD"), method = "renderHotbar", cancellable = true)
 	private void renderHotbar(float tickDelta, GuiGraphics graphics, CallbackInfo ci) {
 	//?} else {
-	/*@Inject(at = @At("HEAD"), method = "renderHotbarAndDecorations", cancellable = true)
-	private void setRenderHotbar(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
+	/*@Inject(at = @At("HEAD"), method = "renderItemHotbar", cancellable = true)
+	private void renderHotbar(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
 	*///?}
 		Entity entity = this.minecraft.getCameraEntity(); Avatar avatar;
 		if (entity == null || (avatar = AvatarManager.getAvatar(entity)) == null || avatar.luaRuntime == null || ((RendererAPIAccessor) avatar.luaRuntime.renderer).shouldRenderHotbar())
@@ -44,6 +46,7 @@ public class GuiMixin {
 			return;
 		ci.cancel();
 	}
+	//? if < 1.21.2 {
 	@Inject(at = @At("HEAD"), method = "renderJumpMeter", cancellable = true)
 	private void setRenderJumpMeter(PlayerRideableJumping mount, GuiGraphics graphics, int x, CallbackInfo ci) {
 		Entity entity = this.minecraft.getCameraEntity(); Avatar avatar;
@@ -58,6 +61,17 @@ public class GuiMixin {
 			return;
 		ci.cancel();
 	}
+	//? } else {
+//	@ModifyExpressionValue(method = "renderHotbarAndDecorations", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;hasExperience()Z"))
+//	private boolean renderExperienceBar(boolean bool) {
+//		if(!bool) return false;
+//		Entity entity = this.minecraft.getCameraEntity(); Avatar avatar;
+//		if (entity == null || (avatar = AvatarManager.getAvatar(entity)) == null || avatar.luaRuntime == null || ((RendererAPIAccessor) avatar.luaRuntime.renderer).shouldRenderExperienceBar())
+//			return true;
+//		return false;
+//	}
+	//? }
+
 	@Inject(at = @At("HEAD"), method = "renderSelectedItemName", cancellable = true)
 	private void setRenderSelectedItemName(GuiGraphics graphics, CallbackInfo ci) {
 		Entity entity = this.minecraft.getCameraEntity(); Avatar avatar;

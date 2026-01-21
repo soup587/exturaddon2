@@ -263,7 +263,7 @@ public abstract class HostAPIMixin {
 			player.removeVehicle();
 			return;
 		}
-//?		if > 1.21.11 {
+//?		if > 1.21.10 {
 //			throw new NotImplementedLuaError();
 //?} else {
 			Entity t = entity.getEntity();
