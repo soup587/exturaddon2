@@ -9,4 +9,8 @@ public interface RendererAPIAccessor {
 	boolean shouldRenderEffects();
 	boolean shouldRenderGUI();
 	boolean shouldRenderFirstPerson();
+	boolean shouldRenderLeftItem();
+	boolean shouldRenderRightItem();
+	boolean shouldRenderLeftArm();
+	boolean shouldRenderRightArm();
 }

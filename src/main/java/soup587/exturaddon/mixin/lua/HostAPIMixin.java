@@ -61,11 +61,21 @@ public abstract class HostAPIMixin {
 
 	@LuaWhitelist
 	@LuaMethodDoc("host.allow_extura_cheats")
+	//? if > 1.21.10 {
+	/*	public Boolean allowExturaCheats() { return this.isHost && this.minecraft.isLocalServer(); }
+		public Boolean canExturaCheat() { 
+			if(allowExturaCheats()) return true;
+			if(!owner.noPermissions.contains(ExturaPermissions.EXTURA_CHEATING))
+				owner.noPermissions.add(ExturaPermissions.EXTURA_CHEATING);
+			return false;
+		}
+	*///?} else {
 	public Boolean allowExturaCheats() {
 		if(!this.isHost) return false;
 		LocalPlayer player = this.minecraft.player;
 		return player != null && ((player.hasPermissions(2)  ||
 				this.minecraft.isLocalServer() ||
+				
 				//? if < 1.20.2 {
 				/*(player.getScoreboard().hasObjective("extura_can_cheat"))
 				*///?} else
@@ -77,17 +87,18 @@ public abstract class HostAPIMixin {
 		LocalPlayer player = this.minecraft.player;
 		if(player == null) return false;
 		if(player.hasPermissions(2)  ||
-				this.minecraft.isLocalServer() ||
+				this.minecraft.isLocalServer()
 				//? if < 1.20.2 {
-				/*(player.getScoreboard().hasObjective("extura_can_cheat"))
+				/* || (player.getScoreboard().hasObjective("extura_can_cheat"))
 				*///?} else
-				(player.getScoreboard().getObjective("extura_can_cheat") != null)
+				 || (player.getScoreboard().getObjective("extura_can_cheat") != null)
 		) return true;
 		if(!owner.noPermissions.contains(ExturaPermissions.EXTURA_CHEATING)){
 			owner.noPermissions.add(ExturaPermissions.EXTURA_CHEATING);
 		}
 		return false;
 	}
+	//?}
 
 	@LuaWhitelist
 	@LuaMethodDoc(
