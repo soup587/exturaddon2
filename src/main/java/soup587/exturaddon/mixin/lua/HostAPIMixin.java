@@ -61,6 +61,7 @@ public abstract class HostAPIMixin {
 
 	@LuaWhitelist
 	@LuaMethodDoc("host.allow_extura_cheats")
+	/* TODO Implement 1.21.10+ handling of permissions*/
 	//? if > 1.21.10 {
 	/*	public Boolean allowExturaCheats() { return this.isHost && this.minecraft.isLocalServer(); }
 		public Boolean canExturaCheat() { 

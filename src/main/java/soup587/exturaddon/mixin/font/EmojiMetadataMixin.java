@@ -1,6 +1,8 @@
 package soup587.exturaddon.mixin.font;
 
 
+import com.moulberry.mixinconstraints.annotations.IfModLoaded;
+import com.moulberry.mixinconstraints.annotations.IfModAbsent;
 import com.google.gson.JsonObject;
 import org.figuramc.figura.font.EmojiMetadata;
 import org.figuramc.figura.utils.JsonUtils;
@@ -9,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 
 
+@IfModLoaded(value = "figura", minVersion = "0.1.0", maxVersion = "0.1.5")
+@IfModAbsent(value = "extura")
 @Mixin(EmojiMetadata.class)
 public class EmojiMetadataMixin {
 	private static final String JSON_KEY_FRAMES = "frames";
