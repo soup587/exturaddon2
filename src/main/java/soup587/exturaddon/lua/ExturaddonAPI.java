@@ -21,6 +21,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import org.figuramc.figura.FiguraMod;
 import org.figuramc.figura.avatar.Avatar;
 import org.figuramc.figura.avatar.AvatarManager;
@@ -37,6 +38,7 @@ import org.figuramc.figura.lua.docs.LuaMethodDoc;
 import org.figuramc.figura.lua.docs.LuaMethodOverload;
 import org.figuramc.figura.math.vector.FiguraVec2;
 import org.figuramc.figura.math.vector.FiguraVec3;
+import org.figuramc.figura.mixin.ClientLevelInvoker;
 import org.figuramc.figura.mixin.input.KeyMappingAccessor;
 import org.figuramc.figura.utils.LuaUtils;
 import org.luaj.vm2.LuaError;
@@ -52,10 +54,14 @@ import soup587.exturaddon.overrides.NoInput;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+
+import static org.figuramc.figura.lua.api.world.WorldAPI.getCurrentWorld;
 
 @LuaWhitelist
 public class ExturaddonAPI {
@@ -76,7 +82,7 @@ public class ExturaddonAPI {
 	}
 	@LuaWhitelist
 	@LuaMethodDoc("extura.allow_extura_cheats")
-	
+
 
 	public Boolean allowExturaCheats() {
 		if(!this.isHost) return false;
@@ -530,5 +536,40 @@ public class ExturaddonAPI {
 			throw new LuaError("Failed to find key: \"" + id + "\"");
 		key.setDown(state);
 		key.clickCount += 1;
+	}
+
+	@LuaWhitelist
+	@LuaMethodDoc("extura.get_all_entities")
+	public static List<EntityAPI<?>> getAllEntities() {
+		List<EntityAPI<?>> ents = new ArrayList<>();
+		for (Entity ent : ((ClientLevelInvoker) getCurrentWorld()).getEntityGetter().getAll()) {
+			ents.add(EntityAPI.wrap(ent));
+		}
+		return ents;
+	}
+
+	@LuaWhitelist
+	@LuaMethodDoc(
+			overloads = {
+					@LuaMethodOverload(
+							argumentTypes = {Integer.class, FiguraVec3.class},
+							argumentNames = {"half_range", "pos"}
+					),
+					@LuaMethodOverload(
+							argumentTypes = {Integer.class, Double.class, Double.class, Double.class},
+							argumentNames = {"half_range", "x", "y", "z"}
+					)
+			},
+			value = "extura.get_nearby_entities"
+	)
+	public static Map<String, EntityAPI<?>> getNearbyEntities(Integer range, Object x, Double y, Double z) {
+		var pos = LuaUtils.parseVec3("getNearbyEntities", x, y, z).asVec3();
+		HashMap<String, EntityAPI<?>> entityList = new HashMap<>();
+
+		AABB area = new AABB(pos.subtract(range, range, range), pos.add(range, range, range));
+		for (Entity entity : getCurrentWorld().getEntitiesOfClass(Entity.class, area)) {
+			entityList.put(entity.getUUID().toString(), EntityAPI.wrap(entity));
+		}
+		return entityList;
 	}
 }
